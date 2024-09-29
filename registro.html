@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Usuário</title>
+    <style>
+        /* Estilos Gerais */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Estilos do Formulário */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #4a90e2;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #357abd;
+        }
+
+        label {
+            text-align: left;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        /* Estilo do Botão */
+        button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        /* Mensagem de Erro */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registrar-se</h1>
+        <form id="register-form">
+            <input type="text" id="username" placeholder="Nome de Usuário" required>
+            <input type="password" id="password" placeholder="Senha" required>
+            <label for="profile-pic">Escolha uma foto de perfil:</label>
+            <input type="file" id="profile-pic" accept="image/*">
+            <button type="submit">Registrar</button>
+        </form>
+
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <script>
+        // Função para converter a imagem em Base64
+        function getBase64(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                callback(reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Erro ao converter imagem para base64: ', error);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const profilePicInput = document.getElementById('profile-pic');
+            const file = profilePicInput.files[0];
+            const errorMessage = document.getElementById('error-message');
+
+            // Verificar se o nome de usuário já existe no localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userExists = users.some(u => u.username === username);
+
+            if (userExists) {
+                errorMessage.textContent = 'Usuário já registrado!';
+            } else {
+                if (file) {
+                    // Converta a imagem para base64
+                    getBase64(file, function (base64Image) {
+                        // Criar objeto do usuário com foto de perfil
+                        const user = {
+                            username: username,
+                            password: password,
+                            profilePic: base64Image,  // Foto de perfil em base64
+                            animes: []  // Lista vazia de animes
+                        };
+
+                        // Salvar usuário no localStorage
+                        users.push(user);
+                        localStorage.setItem('users', JSON.stringify(users));
+
+                        // Também salvar o usuário logado no localStorage
+                        localStorage.setItem('loggedInUser', JSON.stringify(user));
+                        alert('Usuário registrado com sucesso!');
+                        window.location.href = 'kitsu.html';  // Redirecionar para a página inicial
+                    });
+                } else {
+                    errorMessage.textContent = 'Por favor, selecione uma foto de perfil.';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

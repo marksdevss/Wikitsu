@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Social</title>
+    <link rel="stylesheet" href="feed.css"> <!-- Link para o CSS -->
+</head>
+
+<body>
+    <h1>Feed Social</h1>
+
+    <div id="user-info">
+        <h2>Bem-vindo, <span id="username"></span>!</h2>
+        <img id="profile-pic" src="" alt="Foto de Perfil" style="border-radius: 50%; width: 120px; height: 120px;">
+    </div>
+
+    <div id="social-feed" style="margin-top: 30px;">
+        <h2>Atividades dos Usuários Seguidos</h2>
+        <div id="feed-results"></div>
+    </div>
+
+    <button id="back-button" onclick="goBack()"
+        style="padding: 10px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer;">Voltar</button>
+
+    <script>
+        // Carregar dados do usuário logado
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+        if (loggedInUser) {
+            document.getElementById('username').textContent = loggedInUser.username;
+            document.getElementById('profile-pic').src = loggedInUser.profilePic;
+
+            displayFeed();
+        } else {
+            window.location.href = 'login.html';  // Redirecionar para login se o usuário não estiver logado
+        }
+
+        function displayFeed() {
+            const feedResultsDiv = document.getElementById('feed-results');
+            feedResultsDiv.innerHTML = ''; // Limpa resultados anteriores
+
+            const activities = loggedInUser.activityLog || [];
+
+            if (activities.length === 0) {
+                feedResultsDiv.innerHTML = '<p>Nenhuma atividade recente encontrada.</p>';
+            } else {
+                activities.forEach(activity => {
+                    const activityDiv = document.createElement('div');
+                    activityDiv.textContent = activity; // Mostra a atividade
+                    feedResultsDiv.appendChild(activityDiv);
+                });
+            }
+        }
+
+
+        // Função para voltar à página anterior
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

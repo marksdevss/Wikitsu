@@ -1,0 +1,108 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #4a90e2;
+    margin-bottom: 30px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+/* Botão Voltar */
+#back-button {
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+#back-button:hover {
+    background-color: #d93636;
+}
+
+/* Filtro de Categorias */
+#category-filter {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #4a90e2;
+    margin-top: 10px;
+}
+
+/* Estilo da lista de animes */
+#anime-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.anime {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.anime img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.anime h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.anime p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Hover Animation */
+.anime:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para o botão "Limpar Biblioteca" */
+#clear-library-button {
+    margin-bottom: 20px;
+}
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #anime-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .anime {
+        width: 90%;
+    }
+}

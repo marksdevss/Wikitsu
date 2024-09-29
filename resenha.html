@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Resenhas de Animes</title>
+    <link rel="stylesheet" href="MinhasResenhas.css"> <!-- Link para o CSS -->
+</head>
+<body>
+    <h1>Minhas Resenhas de Animes Favoritos</h1>
+
+    <div id="anime-list"></div>
+
+    <button id="back-button" onclick="goBack()"
+        style="padding: 10px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer;">Voltar</button>
+
+    <script>
+        // Carregar dados do usuário logado
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')) || { favorites: [] };
+
+        // Função para exibir animes favoritados
+        function displayFavoriteAnimes() {
+            const animeList = document.getElementById('anime-list');
+            animeList.innerHTML = ''; // Limpa a lista anterior
+
+            if (loggedInUser.favorites.length === 0) {
+                animeList.innerHTML = '<p>Nenhum anime favoritado ainda.</p>';
+                return;
+            }
+
+            loggedInUser.favorites.forEach(anime => {
+                const animeItem = document.createElement('div');
+                animeItem.innerHTML = `
+                    <h3>${anime.title}</h3>
+                    <img src="${anime.image}" alt="${anime.title}" style="width: 100px; height: auto;">
+                    <p>${anime.description}</p>
+                    <textarea id="review-${anime.id}" placeholder="Escreva sua resenha..." rows="4" cols="50">${anime.review || ''}</textarea>
+                    <button onclick="saveReview('${anime.id}')">Salvar Resenha</button>
+                `;
+                animeList.appendChild(animeItem);
+            });
+        }
+
+        // Função para salvar a resenha
+        function saveReview(animeId) {
+            const reviewTextarea = document.getElementById(`review-${animeId}`);
+            const reviewText = reviewTextarea.value;
+
+            const favorites = loggedInUser.favorites.map(anime => {
+                if (anime.id === animeId) {
+                    return { ...anime, review: reviewText }; // Adiciona a resenha ao anime
+                }
+                return anime;
+            });
+
+            // Atualiza o localStorage
+            loggedInUser.favorites = favorites; // Atualiza a lista de favoritos com a nova resenha
+            localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+            alert('Resenha salva com sucesso!');
+        }
+
+        // Função para voltar à página anterior
+        function goBack() {
+            window.history.back();
+        }
+
+        // Carregar animes favoritados ao carregar a página
+        displayFavoriteAnimes();
+    </script>
+</body>
+</html>

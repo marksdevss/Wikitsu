@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguir Usuários</title>
+    <link rel="stylesheet" href="Seguir-me.css"> <!-- Link para o CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Seguir Usuários</h1>
+
+        <div id="user-info">
+            <h2>Bem-vindo, <span id="username"></span>!</h2>
+            <img id="profile-pic" src="" alt="Foto de Perfil" style="border-radius: 50%; width: 120px; height: 120px;">
+            <p>Seguidores: <span id="follower-count">0</span></p>
+        </div>
+
+        <div id="follow-section" style="margin-top: 30px;">
+            <h2>Seguir Usuários</h2>
+            <input type="text" id="search-user" placeholder="Digite o nome de usuário">
+            <button onclick="searchUsers()">Pesquisar</button>
+            <div id="user-results"></div>
+        </div>
+
+        <button id="back-button" onclick="goBack()" style="padding: 10px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer;">Voltar</button>
+    </div>
+
+    <script src="seguindo.js"></script> <!-- Referência ao arquivo JS -->
+</body>
+</html>

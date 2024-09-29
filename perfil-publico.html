@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" href="profile.css"> <!-- Link para o CSS -->
+</head>
+
+<body>
+    <h1>Perfil do Usuário</h1>
+    <div class="user-info" id="user-info">
+        <h2>Bem-vindo, <span id="username"></span>!</h2>
+        <img id="profile-pic" src="" alt="Foto de Perfil" style="border-radius: 50%; width: 120px; height: 120px;">
+        <p>Seguidores: <span id="follower-count">0</span></p>
+        <p>Seguindo: <span id="following-count">0</span></p>
+    </div>
+
+    <button id="back-button" onclick="goBack()">Voltar</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            if (loggedInUser) {
+                document.getElementById('username').textContent = loggedInUser.username;
+                document.getElementById('profile-pic').src = loggedInUser.profilePic || 'default-profile-pic.png'; // Usar uma imagem padrão
+                document.getElementById('follower-count').textContent = loggedInUser.followers ? loggedInUser.followers.length : 0;
+                document.getElementById('following-count').textContent = loggedInUser.following ? loggedInUser.following.length : 0;
+            } else {
+                document.getElementById('user-info').innerHTML = '<p>Usuário não encontrado.</p>';
+            }
+        });
+
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

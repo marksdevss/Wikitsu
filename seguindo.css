@@ -1,0 +1,98 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-top: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+/* Estilo da seção de busca */
+#search-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#search-user {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #4a90e2;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#search-user:focus {
+    border-color: #357abd;
+}
+
+/* Estilo dos resultados de usuários */
+#user-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#user-results div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#user-results button {
+    padding: 8px 15px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#user-results button:hover {
+    background-color: #357abd;
+}
+
+/* Estilo da seção de usuários que o usuário segue */
+#following-list {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#following-list h2 {
+    margin-bottom: 15px;
+    color: #4a90e2;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #search-section {
+        flex-direction: column;
+    }
+
+    #search-user {
+        width: 90%; /* Ajustar o tamanho em telas pequenas */
+    }
+
+    #user-results {
+        width: 90%; /* Ajustar a largura dos resultados em telas pequenas */
+    }
+}

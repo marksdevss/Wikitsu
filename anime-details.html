@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Anime</title>
+    <link rel="stylesheet" href="details-anime.css"> <!-- Link para o arquivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes do Anime</h1>
+
+        <div id="anime-details">
+            <!-- Os detalhes do anime serão exibidos aqui -->
+        </div>
+
+        <!-- Botão de voltar -->
+        <a href="kitsu.html" class="back-button">Voltar</a>
+    </div>
+
+    <script>
+        // Pegar o ID do anime da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const animeId = urlParams.get('id');
+
+        // Função para buscar detalhes do anime
+        async function fetchAnimeDetails() {
+            try {
+                const response = await fetch(`https://kitsu.io/api/edge/anime/${animeId}`);
+                const data = await response.json();
+                const anime = data.data.attributes;
+
+                const animeDetailsDiv = document.getElementById('anime-details');
+                animeDetailsDiv.innerHTML = `
+                    <h2>${anime.titles.en_jp || anime.titles.en || anime.canonicalTitle}</h2>
+                    <img src="${anime.posterImage.medium}" alt="${anime.titles.en_jp}">
+                    <p><strong>Sinopse:</strong> ${anime.synopsis}</p>
+                    <p><strong>Gêneros:</strong> ${anime.showType}</p>
+                    <p><strong>Número de Episódios:</strong> ${anime.episodeCount || 'Não disponível'}</p>
+                    <p><strong>Avaliação:</strong> ${anime.averageRating || 'Não disponível'}</p>
+                `;
+            } catch (error) {
+                console.error('Erro ao buscar detalhes do anime:', error);
+                document.getElementById('anime-details').innerHTML = '<p>Erro ao carregar os detalhes do anime.</p>';
+            }
+        }
+
+        // Chamar a função para buscar os detalhes
+        fetchAnimeDetails();
+    </script>
+</body>
+</html>

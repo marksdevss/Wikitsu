@@ -1,0 +1,247 @@
+/* Estilos Gerais */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-top: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Estilo da seção de usuário */
+.user-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-info img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 4px solid #4a90e2;
+}
+
+.user-info h2 {
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Estilo do Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro com transparência */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
+/* Estilo dos inputs no modal */
+#update-profile-form input[type="text"], 
+#update-profile-form input[type="file"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+#update-profile-form input[type="text"]:focus, 
+#update-profile-form input[type="file"]:focus {
+    border-color: #4a90e2;
+}
+
+#update-profile-form button {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#update-profile-form button:hover {
+    background-color: #357abd;
+}
+
+/* Estilos para botões */
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #357abd;
+}
+
+/* Estilo da lista de animes */
+#anime-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Mantém os itens alinhados à esquerda */
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.anime {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 180px; /* Menor largura */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* Efeito hover suave */
+}
+
+.anime img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.anime h3 {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.anime p {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #777;
+}
+
+.anime button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.anime button:hover {
+    background-color: #357abd;
+}
+
+.anime:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para os botões de paginação */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #357abd;
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    /* Ajustes para o container */
+    .container {
+        width: 95%;
+        margin-top: 10px;
+    }
+
+    /* Ajustes nos botões */
+    button {
+        width: 100%; /* 100% da largura */
+    }
+
+    /* Ajustes nos inputs */
+    #search-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #search-query {
+        width: 90%; /* Reduzir largura do input de busca */
+    }
+
+    /* Ajustes da lista de animes */
+    #anime-list {
+        flex-direction: column; /* Empilhar itens verticalmente */
+        align-items: center; /* Centralizar itens */
+    }
+
+    .anime {
+        width: 90%; /* Largura reduzida para dispositivos móveis */
+    }
+
+    /* Ajustes do modal */
+    .modal-content {
+        width: 90%; /* Largura do modal em dispositivos móveis */
+    }
+}

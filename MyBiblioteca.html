@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Biblioteca de Animes</title>
+    <link rel="stylesheet" href="MyBiblioteca.css">
+</head>
+
+<body>
+    <h1>Minha Biblioteca de Animes</h1>
+
+    <!-- Botão Voltar -->
+    <button id="back-button" onclick="goBack()"
+        style="padding: 10px 20px; background-color: #4a90e2; color: white; border: none; border-radius: 5px; cursor: pointer;">Voltar</button>
+
+
+    <!-- Botão Limpar Biblioteca -->
+    <button id="clear-library-button" onclick="clearLibrary()"
+        style="padding: 10px 20px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer;">Limpar
+        Biblioteca</button>
+
+
+    <!-- Botão para Ir para Minhas Resenhas -->
+    <button id="reviews-button" onclick="goToReviews()"
+        style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; cursor: pointer;">Minhas
+        Resenhas</button>
+
+
+
+
+    <!-- Filtro de Categorias -->
+    <div>
+        <label for="category-filter">Filtrar por Categoria:</label>
+        <select id="category-filter" onchange="filterByCategory()">
+            <option value="all">Todas as Categorias</option>
+        </select>
+    </div>
+
+    <!-- Exibição de Animes -->
+    <div class="container">
+        <div id="anime-list"></div>
+    </div>
+
+    <script>
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+        if (loggedInUser && loggedInUser.favorites) {
+            displayAnimes(loggedInUser.favorites);
+            populateCategoryFilter(loggedInUser.favorites); // Preencher as categorias no filtro
+        } else {
+            document.getElementById('anime-list').innerHTML = '<p>Nenhum anime favoritado ainda.</p>';
+        }
+
+
+        // Função para exibir os animes
+        function displayAnimes(animes) {
+            const animeList = document.getElementById('anime-list');
+            animeList.innerHTML = '';  // Limpar a lista anterior
+
+            if (animes.length === 0) {
+                animeList.innerHTML = '<p>Nenhum anime encontrado.</p>';
+            } else {
+                animes.forEach(anime => {
+                    const animeItem = document.createElement('div');
+                    animeItem.classList.add('anime');
+                    animeItem.innerHTML = `
+                <h3>${anime.title}</h3>
+                <img src="${anime.image}" alt="${anime.title}">
+                <p>Categoria: ${anime.category}</p>
+                <p>Progresso: ${anime.progress || 0} episódios assistidos</p>
+                <input type="number" min="0" placeholder="Episódios assistidos" id="progress-${anime.id}">
+                <button onclick="updateProgress('${anime.id}')">Atualizar Progresso</button>
+                <button onclick="deleteAnime('${anime.id}')">Deletar Anime</button>
+            `;
+                    animeList.appendChild(animeItem);
+                });
+            }
+        }
+
+
+        // Função para atualizar o progresso
+        function updateProgress(animeId) {
+            const progressInput = document.getElementById(`progress-${animeId}`);
+            const episodesWatched = parseInt(progressInput.value, 10);
+
+            if (isNaN(episodesWatched) || episodesWatched < 0) {
+                alert("Por favor, insira um número válido de episódios assistidos.");
+                return;
+            }
+
+            const favorites = loggedInUser.favorites || [];
+            const animeToUpdate = favorites.find(anime => anime.id === animeId);
+
+            if (animeToUpdate) {
+                animeToUpdate.progress = episodesWatched; // Atualiza o progresso
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser)); // Salva a atualização no localStorage
+                alert(`Progresso atualizado para ${episodesWatched} episódios assistidos.`);
+                displayAnimes(favorites); // Atualiza a visualização
+            }
+        }
+
+
+        // Função para deletar um anime da biblioteca
+        function deleteAnime(animeId) {
+            const favorites = loggedInUser.favorites || []; // Obtém a lista de favoritos
+            const updatedFavorites = favorites.filter(anime => anime.id !== animeId); // Filtra o anime a ser deletado
+
+            loggedInUser.favorites = updatedFavorites; // Atualiza os favoritos do usuário
+
+            // Atualizar o localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const updatedUsers = users.map(user => {
+                if (user.username === loggedInUser.username) {
+                    return loggedInUser;  // Atualiza os dados do usuário no localStorage
+                }
+                return user;
+            });
+
+            localStorage.setItem('users', JSON.stringify(updatedUsers)); // Salva a lista atualizada de usuários
+            localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser)); // Salva o usuário logado
+
+            // Atualiza a visualização
+            displayAnimes(updatedFavorites);
+            alert('Anime deletado com sucesso!');
+        }
+
+        // Função para limpar toda a biblioteca
+        function clearLibrary() {
+            if (confirm('Tem certeza de que deseja limpar toda a biblioteca?')) {
+                loggedInUser.favorites = []; // Limpa os favoritos
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser)); // Atualiza no localStorage
+                displayAnimes([]); // Atualiza a visualização
+                alert('Biblioteca limpa com sucesso!');
+            }
+        }
+
+        // Função para preencher as opções do filtro de categorias
+        function populateCategoryFilter(animes) {
+            const categoryFilter = document.getElementById('category-filter');
+            const categories = new Set(animes.map(anime => anime.category));  // Coletar categorias únicas
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+        }
+
+        // Função para filtrar os animes por categoria
+        function filterByCategory() {
+            const selectedCategory = document.getElementById('category-filter').value;
+            const filteredAnimes = selectedCategory === 'all'
+                ? loggedInUser.favorites
+                : loggedInUser.favorites.filter(anime => anime.category === selectedCategory);
+
+            displayAnimes(filteredAnimes);  // Exibir os animes filtrados
+        }
+
+        // Função para voltar à página anterior
+        function goBack() {
+            window.history.back();
+        }
+
+
+        // Função para redirecionar para a página de resenhas
+        function goToReviews() {
+            window.location.href = 'resenha.html'; // Altere para o nome correto do arquivo da página de resenhas
+        }
+
+
+
+        // Verifique se o objeto `loggedInUser` e sua propriedade `favorites` estão definidos
+        if (loggedInUser && loggedInUser.favorites) {
+            console.log('Animes favoritos:', loggedInUser.favorites); // Log para verificar os favoritos
+            displayAnimes(loggedInUser.favorites);
+            populateCategoryFilter(loggedInUser.favorites); // Preencher as categorias no filtro
+        } else {
+            document.getElementById('anime-list').innerHTML = '<p>Nenhum anime favoritado ainda.</p>';
+        }
+
+
+    </script>
+</body>
+
+</html>

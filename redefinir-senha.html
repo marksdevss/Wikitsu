@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha</title>
+    <link rel="stylesheet" href="redefinir-senha.css"> <!-- Link para o CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Redefinir Senha</h1>
+        <div id="user-info">
+            <img id="profile-pic" src="" alt="Foto de Perfil" style="border-radius: 50%; width: 120px; height: 120px;">
+            <p>Nome de Usuário: <span id="username"></span></p>
+        </div>
+        <form id="reset-password-form">
+            <input type="password" id="new-password" placeholder="Digite sua nova senha" required>
+            <button type="submit">Redefinir Senha</button>
+        </form>
+        <div class="error-message" id="error-message"></div>
+    </div>
+
+    <script>
+        // Carregar dados do usuário logado
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+        if (loggedInUser) {
+            document.getElementById('username').textContent = loggedInUser.username;
+            document.getElementById('profile-pic').src = loggedInUser.profilePic;
+        } else {
+            // Redirecionar para a página de login se o usuário não estiver logado
+            window.location.href = 'login.html';
+        }
+
+        // Adicionar evento para o formulário de redefinição de senha
+        document.getElementById('reset-password-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+
+            // Atualizar a senha do usuário no localStorage
+            loggedInUser.password = newPassword; // Atualizando a senha
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Atualiza o objeto do usuário na lista de usuários
+            const updatedUsers = users.map(user => {
+                if (user.username === loggedInUser.username) {
+                    return loggedInUser; // Retorna o usuário atualizado
+                }
+                return user; // Retorna os demais usuários inalterados
+            });
+
+            // Salva a lista atualizada no localStorage
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+            alert('Senha redefinida com sucesso!');
+            // Redirecionar para a página de login
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
